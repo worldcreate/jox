@@ -2,14 +2,26 @@
 #include "Individual.h"
 #include "Gt.h"
 
+#define INPUT_FILE "FT6.txt"
+
 Individual::Individual():mFitness(0){
 
 }
 
+Individual::Individual(int machineNum,int jobNum):mFitness(0){
+	mGene=vector<vector<int> >(machineNum,vector<int>(jobNum,-1));
+}
+
 void Individual::initGene(){
-	Gt gt("sample.txt");
+	Gt gt(INPUT_FILE);
 	gt.execute();
 	mGene=gt.convertAStoMatrix(gt.getASTable());
+	mFitness=gt.getMakespan();
+}
+
+void Individual::fixGene(){
+	Gt gt(INPUT_FILE);
+	mGene=gt.fixMatrix(mGene);
 	mFitness=gt.getMakespan();
 }
 
@@ -24,12 +36,20 @@ void Individual::print(){
 	cout<<endl;
 }
 
-void Individual::getJobNum(){
+int Individual::getJobNum(){
 	return mGene[0].size();
 }
 
-vector<int>& operator[](int n){
+int Individual::getMachineNum(){
+	return mGene.size();
+}
+
+vector<int>& Individual::operator[](int n){
 	return mGene[n];
+}
+
+bool Individual::operator<(const Individual& obj){
+	return this->mFitness<obj.mFitness;
 }
 
 Individual::~Individual(){

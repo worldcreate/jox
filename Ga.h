@@ -15,13 +15,15 @@ public:
 	void setMutation(int);
 	void setChildNum(int);
 	void printPopulation();
+	void jox(vector<Individual*>&);
 	void execute();
 	~Ga();
 private:
 	void initialize();
 	void crossOver();
-	void jox(vector<Individual*>&);
-	void mutation();
+
+	void mutation(Individual*);
+	void shiftChange(vector<int>&,int,int);
 	int mPopulationSize;
 	int mMutation;
 	int mGeneration;

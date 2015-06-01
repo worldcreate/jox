@@ -311,6 +311,17 @@ int Gt::getMakespan(){
 }
 
 Gt::JobPair& Gt::findJobpairByMachineAndJobFromMatrix(int machine,int jobIndex){
+	#ifdef DEBUG
+		cout<<"machine="<<machine<<endl;
+		cout<<"jobIndex="<<jobIndex<<endl;
+		cout<<"========================="<<endl;
+		for(int i=0;i<mMatrix.size();i++){
+			for(int j=0;j<mMatrix[0].size();j++){
+				cout<<"mMatrix["<<i<<"]["<<j<<"]="<<mMatrix[i][j].machine<<","<<mMatrix[i][j].jobIndex<<" ";
+			}
+			cout<<endl;
+		}
+	#endif
 	for(int i=0;i<mMatrix.size();i++){
 		for(int j=0;j<mMatrix[0].size();j++){
 			if(mMatrix[i][j].machine!=machine)

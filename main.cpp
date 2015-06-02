@@ -43,7 +43,6 @@ int main(int argc,char *argv[]){
 		}
 		i++;
 	}
-	/*
 	for(int i=0;i<TRIAL;i++){
 		Ga ga;
 		ga.setPopulation(population);
@@ -52,7 +51,4 @@ int main(int argc,char *argv[]){
 		ga.setChildNum(childnum);
 		ga.execute();
 	}
-	*/
-	Test t;
-	t.test();
 }

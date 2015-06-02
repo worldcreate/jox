@@ -224,7 +224,7 @@ void Gt::setNextJobpair(int index,int machine,pair<int,int> T){
 	vector<int> nextJobTable=mCreateTable[index][nextMachine];
 	
 	for(int j=0;j<mJobNum;j++){
-		if(!findJobpairByMachineAndJob(machine,jobIndex,NOWJOBPAIR)->isCheck())
+		if(!findJobpairByMachineAndJob(nextMachine,j,NOWJOBPAIR)->isCheck())
 			continue;
 		if(emptyTime<nextJobTable[j]){
 			emptyTime=nextJobTable[j];
@@ -233,6 +233,9 @@ void Gt::setNextJobpair(int index,int machine,pair<int,int> T){
 	int Ti=mCreateTable[index][machine][T.second];
 	int Tk=emptyTime;
 	int TT=max(Ti,Tk);
+	#ifdef DEBUG
+		cout<<"emptyTime="<<emptyTime<<":TT="<<TT<<endl;
+	#endif
 	nextJobTable[jobIndex]=TT+jp->time;
 	mCreateTable[index][nextMachine]=nextJobTable;
 }

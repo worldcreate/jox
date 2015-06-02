@@ -2,7 +2,7 @@
 #include "Individual.h"
 #include "Gt.h"
 
-#define INPUT_FILE "FT6.txt"
+#define INPUT_FILE "FT10.txt"
 
 Individual::Individual():mFitness(0){
 

@@ -44,12 +44,24 @@ int Individual::getMachineNum(){
 	return mGene.size();
 }
 
+int Individual::getFitness(){
+	return mFitness;
+}
+
 vector<int>& Individual::operator[](int n){
 	return mGene[n];
 }
 
-bool Individual::operator<(const Individual& obj){
-	return this->mFitness<obj.mFitness;
+bool Individual::operator<(Individual& obj){
+	return this->mFitness<obj.getFitness();
+}
+
+bool Individual::operator>(Individual& obj){
+	return this->mFitness>obj.getFitness();
+}
+
+bool Individual::less(Individual *l, Individual *r){
+	return l->getFitness()<r->getFitness();
 }
 
 Individual::~Individual(){

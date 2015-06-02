@@ -32,6 +32,7 @@ public:
 	void execute();
 	vector<vector<int> > getASTable();
 	vector<vector<int> > convertAStoMatrix(const vector<vector<int> >&);
+	vector<vector<int> > getMatrix();
 	vector<vector<int> > fixMatrix(vector<vector<int> > );
 	int getMakespan();
 private:

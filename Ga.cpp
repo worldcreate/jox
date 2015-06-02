@@ -2,6 +2,7 @@
 #include "Individual.h"
 #include "Util.h"
 #include <algorithm>
+#include <limits.h>
 
 Ga::Ga(){
 
@@ -31,8 +32,9 @@ void Ga::execute(){
 		crossOver();
 		g++;
 	}
-	
-	printPopulation();
+
+	//printPopulation();
+	printMinFitness();
 }
 
 void Ga::printPopulation(){
@@ -62,6 +64,13 @@ void Ga::crossOver(){
 }
 
 void Ga::jox(vector<Individual*> &family){
+	#ifdef DEBUG
+		cout<<"parent1"<<endl;
+		family[0]->print();
+		cout<<"parent2"<<endl;
+		family[1]->print();
+		cout<<"================"<<endl;
+	#endif
 	for(int i=0;i<mChildNum;i+=2){
 		vector<int> saveJob;
 		for(int j=0;j<family[0]->getJobNum();j++){
@@ -153,7 +162,14 @@ void Ga::jox(vector<Individual*> &family){
 		family.push_back(c2);
 	}
 	
-	sort(family.begin(),family.end());
+	sort(family.begin(),family.end(),Individual::less);
+	#ifdef DEBUG
+		cout<<"fitness"<<endl;
+		for(int i=0;i<family.size();i++){
+			family[i]->print();
+		}
+		cout<<"============"<<endl;
+	#endif
 	for(int i=2;i<family.size();i++){
 		delete(family[i]);
 	}
@@ -163,6 +179,11 @@ void Ga::jox(vector<Individual*> &family){
 void Ga::mutation(Individual* individual){
 	int r=Util::getRand(1,100);
 	if(r<=mMutation){
+		#ifdef DEBUG
+			cout<<endl;
+			cout<<"mutation"<<endl;
+			cout<<endl;
+		#endif
 		int job=Util::getRand(0,individual->getJobNum()-1);
 		for(int m=0;m<individual->getMachineNum();m++){
 			vector<int> order;
@@ -194,11 +215,22 @@ void Ga::shiftChange(vector<int> &vec,int src,int dst){
 		}
 		vec[dst]=value;
 	}else{
-		for(int i=dst;i<src;i++){
+		for(int i=src-1;i>=dst;i--){
 			vec[i+1]=vec[i];
 		}
 		vec[dst]=value;
 	}
+}
+
+void Ga::printMinFitness(){
+	int temp=INT_MAX;
+	for(int i=0;i<mPopulationSize;i++){
+		int t=mPopulation[i]->getFitness();
+		if(temp>t){
+			temp=t;
+		}
+	}
+	cout<<"min="<<temp<<endl;
 }
 
 Ga::~Ga(){

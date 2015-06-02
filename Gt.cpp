@@ -179,6 +179,10 @@ void Gt::fixConflict(int index,int machine,pair<int,int> &T){
 	#ifdef DEBUG
 		cout<<"conflict size ="<<c.size()<<endl;
 		cout<<"r="<<r<<endl;
+		for(int ci=0;ci<c.size();ci++){
+			cout<<c[ci].second<<" ";
+		}
+		cout<<endl;
 		cout<<"c[r].second="<<c[r].second<<endl;
 	#endif
 	#ifdef DEBUG
@@ -214,18 +218,21 @@ void Gt::setNextJobpair(int index,int machine,pair<int,int> T){
 	if(jp==NULL)
 		return;
 	/* TODO 修正する必要あり？ */
-	//int emptyTime=0;
+	
+	int emptyTime=0;
 	int nextMachine=jp->machine;
 	vector<int> nextJobTable=mCreateTable[index][nextMachine];
-	/*
+	
 	for(int j=0;j<mJobNum;j++){
+		if(!findJobpairByMachineAndJob(machine,jobIndex,NOWJOBPAIR)->isCheck())
+			continue;
 		if(emptyTime<nextJobTable[j]){
 			emptyTime=nextJobTable[j];
 		}
 	}
-	*/
-	//int TT=max(emptyTime,T);
-	int TT=mCreateTable[index][machine][T.second];
+	int Ti=mCreateTable[index][machine][T.second];
+	int Tk=emptyTime;
+	int TT=max(Ti,Tk);
 	nextJobTable[jobIndex]=TT+jp->time;
 	mCreateTable[index][nextMachine]=nextJobTable;
 }
@@ -280,6 +287,13 @@ vector<vector<int> > Gt::convertAStoMatrix(const vector<vector<int> > &AS){
 	return Matrix;
 }
 
+vector<vector<int> > Gt::getMatrix(){
+	vector<vector<int> > matrix;
+	matrix=getASTable();
+	matrix=convertAStoMatrix(matrix);
+	return matrix;
+}
+
 vector<vector<int> > Gt::fixMatrix(vector<vector<int> > matrix){
 	mFix=true;
 	for(int i=0;i<matrix.size();i++){
@@ -317,7 +331,7 @@ Gt::JobPair& Gt::findJobpairByMachineAndJobFromMatrix(int machine,int jobIndex){
 		cout<<"========================="<<endl;
 		for(int i=0;i<mMatrix.size();i++){
 			for(int j=0;j<mMatrix[0].size();j++){
-				cout<<"mMatrix["<<i<<"]["<<j<<"]="<<mMatrix[i][j].machine<<","<<mMatrix[i][j].jobIndex<<" ";
+				cout<<"mMatrix["<<i<<"]["<<j<<"]="<<mMatrix[i][j].machine<<","<<mMatrix[i][j].jobIndex<<","<<mMatrix[i][j].isCheck()<<" ";
 			}
 			cout<<endl;
 		}

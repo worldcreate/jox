@@ -21,7 +21,7 @@ public:
 private:
 	void initialize();
 	void crossOver();
-
+	void printMinFitness();
 	void mutation(Individual*);
 	void shiftChange(vector<int>&,int,int);
 	int mPopulationSize;

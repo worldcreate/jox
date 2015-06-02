@@ -9,6 +9,7 @@
 #define MUTATION 1
 #define GENERATION 100
 #define CHILDNUM 2
+#define TRIAL 50
 
 using namespace std;
 
@@ -18,6 +19,7 @@ int main(int argc,char *argv[]){
 	int mutation=MUTATION;
 	int generation=GENERATION;
 	int childnum=CHILDNUM;
+	int trial=TRIAL;
 	while(argc>i){
 		if(argv[i][0]=='-'){
 			const char *arg=&argv[i][2];
@@ -34,15 +36,23 @@ int main(int argc,char *argv[]){
 				case 'c':
 					childnum=atoi(arg);
 				break;
+				case 't':
+					trial=atoi(arg);
+				break;
 			}
 		}
 		i++;
 	}
-	
-	Ga ga;
-	ga.setPopulation(population);
-	ga.setGeneration(generation);
-	ga.setMutation(mutation);
-	ga.setChildNum(childnum);
-	ga.execute();
+	/*
+	for(int i=0;i<TRIAL;i++){
+		Ga ga;
+		ga.setPopulation(population);
+		ga.setGeneration(generation);
+		ga.setMutation(mutation);
+		ga.setChildNum(childnum);
+		ga.execute();
+	}
+	*/
+	Test t;
+	t.test();
 }

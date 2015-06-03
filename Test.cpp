@@ -12,31 +12,24 @@ Test::Test(){
 }
 
 void Test::test(){
-	Gt gt("FT6.txt");
-	int m[6][6]={
-		{0,3,2,5,1,4},
-		{1,3,5,0,4,2},
-		{2,0,1,4,3,5},
-		{2,5,3,0,1,4},
-		{1,4,2,3,5,0},
-		{2,5,1,0,4,3}
-	};
-	vector<vector<int> > vec;
-	vec.resize(6);
-	for(int i=0;i<6;i++){
-		vec[i].resize(6);
-	}
-	for(int i=0;i<6;i++){
-		for(int j=0;j<6;j++){
-			vec[i][j]=m[i][j];
-		}
-	}
-	vec=gt.fixMatrix(vec);
+	Individual *parent1=new Individual();
+	Individual *parent2=new Individual();
+	parent1->initGene();
+	parent2->initGene();
 
-	for(int i=0;i<vec.size();i++){
-		for(int j=0;j<vec[0].size();j++){
-			cout<<vec[i][j]<<" ";
-		}
-		cout<<endl;
+	parent1->print();
+	parent2->print();
+
+	cout<<"============================"<<endl;
+
+	vector<Individual*> family;
+	family.push_back(parent1);
+	family.push_back(parent2);
+	Ga ga;
+	ga.setChildNum(2);
+	ga.jox(family);
+
+	for(int i=0;i<family.size();i++){
+		family[i]->print();
 	}
 }

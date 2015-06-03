@@ -170,10 +170,11 @@ void Ga::jox(vector<Individual*> &family){
 		}
 		cout<<"============"<<endl;
 	#endif
+	/*
 	for(int i=2;i<family.size();i++){
 		delete(family[i]);
 	}
-	
+	*/
 }
 
 void Ga::mutation(Individual* individual){

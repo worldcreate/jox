@@ -53,14 +53,14 @@ void Ga::initialize(){
 
 void Ga::crossOver(){
 	random_shuffle(mPopulation.begin(),mPopulation.end());
-	for(int i=0;i<mPopulationSize/2;i+=2){
-		vector<Individual*> family;
-		family.push_back(mPopulation[i]);
-		family.push_back(mPopulation[i+1]);
-		jox(family);
-		mPopulation[i]=family[0];
-		mPopulation[i+1]=family[1];
-	}
+//	for(int i=0;i<mPopulationSize/2;i+=2){
+	vector<Individual*> family;
+	family.push_back(mPopulation[0]);
+	family.push_back(mPopulation[1]);
+	jox(family);
+	mPopulation[0]=family[0];
+	mPopulation[1]=family[1];
+//	}
 }
 
 void Ga::jox(vector<Individual*> &family){

@@ -134,8 +134,8 @@ void Ga::jox(vector<Individual*> &family){
 			cout<<"==============================="<<endl;
 		#endif
 		
-		mutation(c1);
-		mutation(c2);
+		//mutation(c1);
+		//mutation(c2);
 		
 		#ifdef DEBUG
 			cout<<"after mutation"<<endl;
@@ -155,14 +155,14 @@ void Ga::jox(vector<Individual*> &family){
 			}
 			cout<<"==============================="<<endl;
 		#endif
-		c1->fixGene();
-		c2->fixGene();
+		//c1->fixGene();
+		//c2->fixGene();
 		
 		family.push_back(c1);
 		family.push_back(c2);
 	}
 	
-	sort(family.begin(),family.end(),Individual::less);
+	//sort(family.begin(),family.end(),Individual::less);
 	#ifdef DEBUG
 		cout<<"fitness"<<endl;
 		for(int i=0;i<family.size();i++){

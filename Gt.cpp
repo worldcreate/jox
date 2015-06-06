@@ -174,7 +174,31 @@ void Gt::fixConflict(int index,int machine,pair<int,int> &T){
 			changeOrderJobPairMatrix(machine,c[r].second,jp.jobIndex);
 		}
 	}
-	T.first=c[r].first;
+	// スケジュール済みの中から最大のTを探す
+	int scheduledT=0;
+	for(int j=0;j<mJobNum;j++){
+		if(!findJobpairByMachineAndJob(machine,j,NOWJOBPAIR)->isCheck())
+			continue;
+		if(scheduledT<jobTable[j])
+			scheduledT=jobTable[j];
+	}
+	//
+	// 選択されたjobの前の完了時間を取得
+	JobPair* beforeJP=findJobpairByMachineAndJob(machine,c[r].second,PREVJOBPAIR);
+	int beforeT=0;
+	if(beforeJP!=NULL){
+		beforeT=mCreateTable[index][beforeJP->machine][c[r].second];
+	}
+	//
+	#ifdef DEBUG
+		if(beforeJP!=NULL){
+			cout<<"beforeMachine="<<beforeJP->machine<<endl;
+			cout<<"beforeJobIndex="<<beforeJP->jobIndex<<endl;
+		}
+		cout<<"beforeT="<<beforeT<<endl;
+		cout<<"scheduledT="<<scheduledT<<endl;
+	#endif
+	T.first=max(beforeT,scheduledT)+findJobpairByMachineAndJob(machine,c[r].second,NOWJOBPAIR)->time;
 	T.second=c[r].second;
 	#ifdef DEBUG
 		cout<<"conflict size ="<<c.size()<<endl;
@@ -217,7 +241,6 @@ void Gt::setNextJobpair(int index,int machine,pair<int,int> T){
 	JobPair* jp=findJobpairByMachineAndJob(machine,jobIndex,NEXTJOBPAIR);
 	if(jp==NULL)
 		return;
-	/* TODO 修正する必要あり？ */
 	
 	int emptyTime=0;
 	int nextMachine=jp->machine;

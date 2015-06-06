@@ -4,32 +4,62 @@
 #include "Individual.h"
 #include "Util.h"
 #include <iostream>
+#include <stdlib.h>
 
 using namespace std;
+
+#define N 6
 
 Test::Test(){
 
 }
 
 void Test::test(){
-	Individual *parent1=new Individual();
-	Individual *parent2=new Individual();
-	parent1->initGene();
-	parent2->initGene();
-
-	parent1->print();
-	parent2->print();
-
-	cout<<"============================"<<endl;
-
-	vector<Individual*> family;
-	family.push_back(parent1);
-	family.push_back(parent2);
-	Ga ga;
-	ga.setChildNum(2);
-	ga.jox(family);
-
-	for(int i=0;i<family.size();i++){
-		family[i]->print();
+	vector<vector<int> > vec=vector<vector<int> >(N,vector<int>(N,0));
+	for(int i=0;i<N;i++){
+		for(int j=0;j<N;j++){
+			vec[i][j]=j;
+		}
 	}
+	func(vec,0,0,0);
+}
+
+void Test::print(const vector<vector<int> > &vec){
+	for(int i=0;i<N;i++){
+		for(int j=0;j<N;j++){
+			cout<<vec[i][j]<<" ";
+		}
+		cout<<endl;
+	}
+	cout<<endl;
+}
+
+void Test::check(const vector<vector<int> > &vec){
+	for(int i=0;i<N;i++){
+		for(int j=0;j<N;j++){
+			if(vec[i][j]==-1){
+				cout<<"error"<<endl;
+				print(vec);
+				exit(-1);
+			}
+		}
+	}
+}
+
+void Test::func(vector<vector<int> > vec,int i,int j,int k){
+	if(i>=N || j>=N || k>=N)
+		return;
+	int t=vec[i][j];
+	vec[i][j]=vec[i][k];
+	vec[i][k]=t;
+	print(vec);
+	Gt gt("FT6.txt");
+	vec=gt.fixMatrix(vec);
+	cout<<"makespan="<<gt.getMakespan()<<endl;
+	print(vec);
+	check(vec);
+
+	func(vec,i+1,j,k);
+	func(vec,i,j+1,k);
+	func(vec,i,j,k+1);
 }

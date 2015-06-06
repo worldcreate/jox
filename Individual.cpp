@@ -1,8 +1,9 @@
 #include <iostream>
 #include "Individual.h"
 #include "Gt.h"
+#include <stdlib.h>
 
-#define INPUT_FILE "FT6.txt"
+#define INPUT_FILE "FT10.txt"
 
 Individual::Individual():mFitness(0){
 
@@ -22,6 +23,17 @@ void Individual::initGene(){
 void Individual::fixGene(){
 	Gt gt(INPUT_FILE);
 	mGene=gt.fixMatrix(mGene);
+	// Check Matrix
+	for(int i=0;i<mGene.size();i++){
+		for(int j=0;j<mGene.size();j++){
+			if(mGene[i][j]==-1){
+				cout<<"error!!!"<<endl;
+				print();
+				exit(-1);
+			}
+		}
+	}
+	//
 	mFitness=gt.getMakespan();
 }
 

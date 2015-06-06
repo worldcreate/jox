@@ -3,6 +3,7 @@
 #include "Util.h"
 #include <algorithm>
 #include <limits.h>
+#include <math.h>
 
 Ga::Ga(){
 
@@ -134,8 +135,8 @@ void Ga::jox(vector<Individual*> &family){
 			cout<<"==============================="<<endl;
 		#endif
 		
-		//mutation(c1);
-		//mutation(c2);
+		mutation(c1);
+		mutation(c2);
 		
 		#ifdef DEBUG
 			cout<<"after mutation"<<endl;
@@ -155,14 +156,15 @@ void Ga::jox(vector<Individual*> &family){
 			}
 			cout<<"==============================="<<endl;
 		#endif
-		//c1->fixGene();
-		//c2->fixGene();
+		c1->fixGene();
+		c2->fixGene();
+
 		
 		family.push_back(c1);
 		family.push_back(c2);
 	}
 	
-	//sort(family.begin(),family.end(),Individual::less);
+	sort(family.begin(),family.end(),Individual::less);
 	#ifdef DEBUG
 		cout<<"fitness"<<endl;
 		for(int i=0;i<family.size();i++){
@@ -170,11 +172,11 @@ void Ga::jox(vector<Individual*> &family){
 		}
 		cout<<"============"<<endl;
 	#endif
-	/*
+	
 	for(int i=2;i<family.size();i++){
 		delete(family[i]);
 	}
-	*/
+	
 }
 
 void Ga::mutation(Individual* individual){
@@ -225,13 +227,22 @@ void Ga::shiftChange(vector<int> &vec,int src,int dst){
 
 void Ga::printMinFitness(){
 	int temp=INT_MAX;
+	double ave=0;
+	double variance=0;
 	for(int i=0;i<mPopulationSize;i++){
 		int t=mPopulation[i]->getFitness();
+		ave+=mPopulation[i]->getFitness();
 		if(temp>t){
 			temp=t;
 		}
 	}
+	ave/=mPopulationSize;
+	for(int i=0;i<mPopulationSize;i++){
+		variance+=pow(mPopulation[i]->getFitness()-ave,2);
+	}
+	variance/=mPopulationSize;
 	cout<<"min="<<temp<<endl;
+	cout<<"variance="<<variance<<endl;
 }
 
 Ga::~Ga(){

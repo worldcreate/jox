@@ -3,6 +3,7 @@
 #include "Ga.h"
 #include "Gt.h"
 #include "Test.h"
+#include "Util.h"
 
 
 #define POPULATION 50
@@ -10,6 +11,7 @@
 #define GENERATION 100
 #define CHILDNUM 2
 #define TRIAL 50
+#define SEED 100
 
 using namespace std;
 
@@ -43,8 +45,9 @@ int main(int argc,char *argv[]){
 		}
 		i++;
 	}
-	/*
-	for(int i=0;i<TRIAL;i++){
+	
+	for(int i=0;i<trial;i++){
+		Util::setSeed(SEED+i);
 		Ga ga;
 		ga.setPopulation(population);
 		ga.setGeneration(generation);
@@ -52,7 +55,4 @@ int main(int argc,char *argv[]){
 		ga.setChildNum(childnum);
 		ga.execute();
 	}
-	*/
-	Test t;
-	t.test();
 }

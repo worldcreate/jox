@@ -22,6 +22,7 @@ int main(int argc,char *argv[]){
 	int generation=GENERATION;
 	int childnum=CHILDNUM;
 	int trial=TRIAL;
+	int seed=SEED;
 	while(argc>i){
 		if(argv[i][0]=='-'){
 			const char *arg=&argv[i][2];
@@ -40,6 +41,9 @@ int main(int argc,char *argv[]){
 				break;
 				case 't':
 					trial=atoi(arg);
+				break;
+				case 's':
+					seed=atoi(arg);
 				break;
 			}
 		}

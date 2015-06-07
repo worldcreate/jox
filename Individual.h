@@ -12,6 +12,7 @@ public:
 	void initGene();
 	void fixGene();
 	void print();
+	void print(vector<vector<int> >&);
 	int getJobNum();
 	int getMachineNum();
 	int getFitness();

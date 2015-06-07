@@ -22,13 +22,14 @@ void Individual::initGene(){
 
 void Individual::fixGene(){
 	Gt gt(INPUT_FILE);
-	mGene=gt.fixMatrix(mGene);
+	vector<vector<int> >buffer;
+	buffer=gt.fixMatrix(mGene);
 	// Check Matrix
-	for(int i=0;i<mGene.size();i++){
-		for(int j=0;j<mGene.size();j++){
+	for(int i=0;i<buffer.size();i++){
+		for(int j=0;j<buffer.size();j++){
 			if(mGene[i][j]==-1){
 				cout<<"error!!!"<<endl;
-				print();
+				print(buffer);
 				exit(-1);
 			}
 		}
@@ -45,6 +46,16 @@ void Individual::print(){
 		cout<<endl;
 	}
 	cout<<"fitness="<<mFitness<<endl;
+	cout<<endl;
+}
+
+void Individual::print(vector<vector<int> > &vec){
+	for(int i=0;i<vec.size();i++){
+		for(int j=0;j<vec[0].size();j++){
+			cout<<vec[i][j]<<" ";
+		}
+		cout<<endl;
+	}
 	cout<<endl;
 }
 

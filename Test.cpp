@@ -8,7 +8,7 @@
 
 using namespace std;
 
-#define N 6
+#define N 10
 
 Test::Test(){
 
@@ -21,7 +21,10 @@ void Test::test(){
 			vec[i][j]=j;
 		}
 	}
-	func(vec,0,0,0);
+	Gt gt("FT10.txt");
+	print(vec);
+	vec=gt.fixMatrix(vec);
+	check(vec);
 }
 
 void Test::print(const vector<vector<int> > &vec){
@@ -53,7 +56,7 @@ void Test::func(vector<vector<int> > vec,int i,int j,int k){
 	vec[i][j]=vec[i][k];
 	vec[i][k]=t;
 	print(vec);
-	Gt gt("FT6.txt");
+	Gt gt("FT10.txt");
 	vec=gt.fixMatrix(vec);
 	cout<<"makespan="<<gt.getMakespan()<<endl;
 	print(vec);

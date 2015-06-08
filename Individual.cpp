@@ -87,6 +87,21 @@ bool Individual::less(Individual *l, Individual *r){
 	return l->getFitness()<r->getFitness();
 }
 
+bool Individual::operator==(Individual& dst){
+	bool ret=true;
+	for(int i=0;i<mGene.size();i++){
+		for(int j=0;j<mGene.size();j++){
+			if(mGene[i][j]!=dst[i][j])
+				ret=false;
+		}
+	}
+	return ret;
+}
+
+bool Individual::operator!=(Individual& dst){
+	return !(this->operator==(dst));
+}
+
 Individual::~Individual(){
 	
 }

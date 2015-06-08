@@ -59,8 +59,24 @@ void Ga::crossOver(){
 	family.push_back(mPopulation[0]);
 	family.push_back(mPopulation[1]);
 	jox(family);
-	mPopulation[0]=family[0];
-	mPopulation[1]=family[1];
+	// 子供を母集団と同じ個体にしないための操作
+	int count=0;
+	int index=0;
+	while(true){
+		bool ret=false;
+		for(int i=0;i<mPopulationSize;i++){
+			if(family[index]==mPopulation[i])
+				ret=true;
+		}
+		if(!ret){
+			mPopulation[count]=family[index];
+			count++;
+			if(count>1){
+				break;
+			}
+		}
+		index++;
+	}
 //	}
 }
 
@@ -172,11 +188,7 @@ void Ga::jox(vector<Individual*> &family){
 		}
 		cout<<"============"<<endl;
 	#endif
-	
-	for(int i=2;i<family.size();i++){
-		delete(family[i]);
-	}
-	
+		
 }
 
 void Ga::mutation(Individual* individual){

@@ -19,6 +19,8 @@ public:
 	vector<int>& operator[](int);
 	bool operator<(Individual& );
 	bool operator>(Individual& );
+	bool operator==(Individual&);
+	bool operator!=(Individual&);
 	static bool less(Individual*,Individual*);
 	~Individual();
 private:

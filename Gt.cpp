@@ -80,6 +80,7 @@ void Gt::execute(){
 		}
 		addNextIndexTable(index);
 		index++;
+
 	}
 }
 
@@ -117,10 +118,22 @@ int Gt::getMinTimeOverT(const vector<vector<int> > &index,pair<int,int> &T){
 /* チェックする										 */
 bool Gt::checkConflict(int index,int machine,pair<int,int> &T){
 	vector<int> jobTable=mCreateTable[index][machine];
-	for(int j=0;j<mJobNum;j++){
-		if(jobTable[j]<T.first)
+	vector<JobPair> sameT;
+
+	// 同じTをsameTに代入
+	for(int i=0;i<jobTable.size();i++){
+		if(T.first==jobTable[i]){
+			JobPair jp;
+			jp.jobIndex=i;
+			jp.time=jobTable[i];
+		}
+	}
+
+	// それぞれのsameTに対してコンフリクトを起こしているかを確認
+	for(int j=0;j<sameT.size();j++){
+		if(sameT.time<T.first)
 			continue;
-		if(T.second==j)
+		if(sameT.jobIndex==j)
 			continue;
 		if(jobTable[j]-
 			findJobpairByMachineAndJob(machine,j,NOWJOBPAIR)->time <T.first){

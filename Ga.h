@@ -24,6 +24,7 @@ private:
 	void printMinFitness();
 	void mutation(Individual*);
 	void shiftChange(vector<int>&,int,int);
+	void removePopulation(int);
 	int mPopulationSize;
 	int mMutation;
 	int mGeneration;

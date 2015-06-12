@@ -30,11 +30,12 @@ void Ga::execute(){
 	initialize();
 	
 	while(g<mGeneration){
+		cout<<"gen="<<g<<endl;
 		crossOver();
+		printMinFitness();
 		g++;
 	}
 
-	//printPopulation();
 	printMinFitness();
 }
 
@@ -54,22 +55,27 @@ void Ga::initialize(){
 
 void Ga::crossOver(){
 	random_shuffle(mPopulation.begin(),mPopulation.end());
-//	for(int i=0;i<mPopulationSize/2;i+=2){
 	vector<Individual*> family;
-	family.push_back(mPopulation[0]);
-	family.push_back(mPopulation[1]);
+	int r=Util::getRand(0,mPopulation.size()-1);
+	family.push_back(mPopulation[r]);
+	removePopulation(r);
+	r=Util::getRand(0,mPopulation.size()-1);
+	family.push_back(mPopulation[r]);
+	removePopulation(r);
 	jox(family);
 	// 子供を母集団と同じ個体にしないための操作
 	int count=0;
 	int index=0;
+	int hist[2];
 	while(true){
 		bool ret=false;
-		for(int i=0;i<mPopulationSize;i++){
+		for(int i=0;i<mPopulation.size();i++){
 			if(family[index]==mPopulation[i])
 				ret=true;
 		}
 		if(!ret){
-			mPopulation[count]=family[index];
+			mPopulation.push_back(family[index]);
+			hist[count]=index;
 			count++;
 			if(count>1){
 				break;
@@ -77,7 +83,13 @@ void Ga::crossOver(){
 		}
 		index++;
 	}
-//	}
+	for(int i=0;i<family.size();i++){
+		if(i==hist[0])
+			continue;
+		if(i==hist[1])
+			continue;
+		delete(family[i]);
+	}
 }
 
 void Ga::jox(vector<Individual*> &family){
@@ -253,8 +265,18 @@ void Ga::printMinFitness(){
 		variance+=pow(mPopulation[i]->getFitness()-ave,2);
 	}
 	variance/=mPopulationSize;
-	cout<<"min="<<temp<<endl;
-	cout<<"variance="<<variance<<endl;
+	cout<<"min="<<temp;
+	cout<<",variance="<<variance<<endl;
+}
+
+void Ga::removePopulation(int tar){
+	vector<Individual*>::iterator it=mPopulation.begin();
+	for(int i=0;it!=mPopulation.end();it++,i++){
+		if(i==tar){
+			mPopulation.erase(it);
+			break;
+		}
+	}
 }
 
 Ga::~Ga(){

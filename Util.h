@@ -19,6 +19,16 @@ public:
 		}
 		return false;
 	}
+	template <typename T>
+	static void removeVector(vector<T>& vec,int index){
+		typename vector<T>::iterator it=vec.begin();
+		for(int i=0;it!=vec.end();i++,it++){
+			if(i!=index)
+				continue;
+			vec.erase(it);
+			break;
+		}
+	}
 };
 
 #endif

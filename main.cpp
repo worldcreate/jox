@@ -49,7 +49,7 @@ int main(int argc,char *argv[]){
 		}
 		i++;
 	}
-	
+	/*
 	for(int i=0;i<trial;i++){
 		Util::setSeed(SEED+i);
 		Ga ga;
@@ -59,4 +59,7 @@ int main(int argc,char *argv[]){
 		ga.setChildNum(childnum);
 		ga.execute();
 	}
+	*/
+	Test t;
+	t.test();
 }

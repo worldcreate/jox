@@ -6,34 +6,28 @@
 #include <iostream>
 #include <stdlib.h>
 #include <vector>
+#include <limits.h>
 
 using namespace std;
 
-#define N 10
+#define N 1000000
 
 Test::Test(){
 
 }
 
 void Test::test(){
-	int mat[N][N]={
-		{0,1,2,3,4,5,6,7,8,9},
-		{0,1,2,3,4,5,6,7,8,9},
-		{0,1,2,3,4,5,6,7,8,9},
-		{0,1,2,3,4,5,6,7,8,9},
-		{0,1,2,3,4,5,6,7,8,9},
-		{0,1,2,3,4,5,6,7,8,9},
-		{0,1,2,3,4,5,6,7,8,9},
-		{0,1,2,3,4,5,6,7,8,9},
-		{0,1,2,3,4,5,6,7,8,9},
-		{0,1,2,3,4,5,6,7,8,9}
-	};
-	Individual individual(N,N);
+	int t=INT_MAX;
+	double sum=0;
 	for(int i=0;i<N;i++){
-		for(int j=0;j<N;j++){
-			individual[i][j]=mat[i][j];
+		Individual individual;
+		individual.initGene();
+		//individual.print();
+		if(t>individual.getFitness()){
+			t=individual.getFitness();
 		}
+		sum+=individual.getFitness();
 	}
-	individual.fixGene();
-	individual.print();
+	cout<<"min="<<t<<endl;
+	cout<<"ave="<<sum/N<<endl;
 }

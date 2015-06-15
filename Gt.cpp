@@ -119,26 +119,32 @@ int Gt::getMinTimeOverT(const vector<vector<int> > &index,pair<int,int> &T){
 bool Gt::checkConflict(int index,int machine,pair<int,int> &T){
 	vector<int> jobTable=mCreateTable[index][machine];
 	vector<JobPair> sameT;
-
+	vector<JobPair> differT;
+	vector<JobPair> c;
 	// 同じTをsameTに代入
 	for(int i=0;i<jobTable.size();i++){
-		if(T.first==jobTable[i]){
-			JobPair jp;
-			jp.jobIndex=i;
-			jp.time=jobTable[i];
+		JobPair jp;
+		jp.jobIndex=i;
+		jp.time=jobTable[i];
+		if(T.first==jp.time){
+			sameT.push_back(jp);
+		}else if(T.first<jp.time){
+			differT.push_back(jp);
 		}
 	}
 
 	// それぞれのsameTに対してコンフリクトを起こしているかを確認
-	for(int j=0;j<sameT.size();j++){
-		if(sameT.time<T.first)
-			continue;
-		if(sameT.jobIndex==j)
-			continue;
-		if(jobTable[j]-
-			findJobpairByMachineAndJob(machine,j,NOWJOBPAIR)->time <T.first){
-			return true;
+	for(int j=0;j<differT.size();j++){
+		if(differT[j].time-
+			findJobpairByMachineAndJob(
+				machine,differT[j].jobIndex,NOWJOBPAIR)->time <T.first
+			){
+			c.push_back(differT[j]);
 		}
+	}
+	c.insert(c.end(),sameT.begin(),sameT.end());
+	if(c.size()>1){
+		return true;
 	}
 	return false;
 }
@@ -147,15 +153,33 @@ bool Gt::checkConflict(int index,int machine,pair<int,int> &T){
 /* コンフリクトを起こしていた場合、修正する			 */
 void Gt::fixConflict(int index,int machine,pair<int,int> &T){
 	vector<int> jobTable=mCreateTable[index][machine];
-	vector<pair<int,int> > c;
-	for(int j=0;j<mJobNum;j++){
-		if(jobTable[j]<T.first)
-			continue;
-		if(jobTable[j]-
-			findJobpairByMachineAndJob(machine,j,NOWJOBPAIR)->time>T.first)
-			continue;
-		c.push_back(pair<int,int>(jobTable[j],j));
+	vector<JobPair> c;
+	vector<JobPair> sameT;
+	vector<JobPair> differT;
+	// 同じTをsameTに代入
+	for(int i=0;i<jobTable.size();i++){
+		JobPair jp;
+		jp.jobIndex=i;
+		jp.time=jobTable[i];
+		if(T.first==jobTable[i]){
+			sameT.push_back(jp);
+		}else if(T.first<jp.time){
+			differT.push_back(jp);
+		}
 	}
+
+	// それぞれのsameTに対してコンフリクトを起こしているかを確認
+	for(int j=0;j<differT.size();j++){
+		if(differT[j].time-
+			findJobpairByMachineAndJob(
+				machine,differT[j].jobIndex,NOWJOBPAIR)->time <T.first
+			){
+			c.push_back(differT[j]);
+		}
+	}
+	c.insert(c.end(),sameT.begin(),sameT.end());
+
+
 	int r=-1;
 	if(!mFix){
 		r=Util::getRand(0,c.size()-1);
@@ -170,7 +194,7 @@ void Gt::fixConflict(int index,int machine,pair<int,int> &T){
 		JobPair jp=getFirstNotCheckJobPairFromMatrix(machine);
 		bool find=false;
 		for(int i=0;i<c.size();i++){
-			if(c[i].second!=jp.jobIndex)
+			if(c[i].jobIndex!=jp.jobIndex)
 				continue;
 			#ifdef DEBUG
 				cout<<"find!"<<endl;
@@ -184,7 +208,7 @@ void Gt::fixConflict(int index,int machine,pair<int,int> &T){
 				cout<<"not find!"<<endl;
 			#endif
 			r=Util::getRand(0,c.size()-1);
-			changeOrderJobPairMatrix(machine,c[r].second,jp.jobIndex);
+			changeOrderJobPairMatrix(machine,c[r].jobIndex,jp.jobIndex);
 		}
 	}
 	// スケジュール済みの中から最大のTを探す
@@ -197,10 +221,10 @@ void Gt::fixConflict(int index,int machine,pair<int,int> &T){
 	}
 	//
 	// 選択されたjobの前の完了時間を取得
-	JobPair* beforeJP=findJobpairByMachineAndJob(machine,c[r].second,PREVJOBPAIR);
+	JobPair* beforeJP=findJobpairByMachineAndJob(machine,c[r].jobIndex,PREVJOBPAIR);
 	int beforeT=0;
 	if(beforeJP!=NULL){
-		beforeT=mCreateTable[index][beforeJP->machine][c[r].second];
+		beforeT=mCreateTable[index][beforeJP->machine][c[r].jobIndex];
 	}
 	//
 	#ifdef DEBUG
@@ -211,35 +235,35 @@ void Gt::fixConflict(int index,int machine,pair<int,int> &T){
 		cout<<"beforeT="<<beforeT<<endl;
 		cout<<"scheduledT="<<scheduledT<<endl;
 	#endif
-	T.first=max(beforeT,scheduledT)+findJobpairByMachineAndJob(machine,c[r].second,NOWJOBPAIR)->time;
-	T.second=c[r].second;
+	T.first=max(beforeT,scheduledT)+findJobpairByMachineAndJob(machine,c[r].jobIndex,NOWJOBPAIR)->time;
+	T.second=c[r].jobIndex;
 	#ifdef DEBUG
 		cout<<"conflict size ="<<c.size()<<endl;
 		cout<<"r="<<r<<endl;
 		for(int ci=0;ci<c.size();ci++){
-			cout<<c[ci].second<<" ";
+			cout<<c[ci].jobIndex<<" ";
 		}
 		cout<<endl;
-		cout<<"c[r].second="<<c[r].second<<endl;
+		cout<<"c[r].second="<<c[r].jobIndex<<endl;
 	#endif
 	#ifdef DEBUG
 		cout<<"T.first="<<T.first<<endl;
 	#endif
-	mCreateTable[index][machine][c[r].second]=T.first;
+	mCreateTable[index][machine][c[r].jobIndex]=T.first;
 	for(int j=0;j<c.size();j++){
 		if(j==r)
 			continue;
 		JobPair* prevJobPair;
 		int prevT=0;
 		int TT=0;
-		prevJobPair=findJobpairByMachineAndJob(machine,c[j].second,PREVJOBPAIR);
+		prevJobPair=findJobpairByMachineAndJob(machine,c[j].jobIndex,PREVJOBPAIR);
 
 		if(prevJobPair!=NULL){
-			prevT=mCreateTable[index][prevJobPair->machine][c[j].second];
+			prevT=mCreateTable[index][prevJobPair->machine][c[j].jobIndex];
 		}
 		TT=max(prevT,T.first);
-		mCreateTable[index][machine][c[j].second]=
-			findJobpairByMachineAndJob(machine,c[j].second,NOWJOBPAIR)->time+TT;
+		mCreateTable[index][machine][c[j].jobIndex]=
+			findJobpairByMachineAndJob(machine,c[j].jobIndex,NOWJOBPAIR)->time+TT;
 	}
 }
 

@@ -68,12 +68,14 @@ void Ga::crossOver(){
 	int index=0;
 	int hist[2];
 	while(true){
-		bool ret=false;
+		bool ret=true;
 		for(int i=0;i<mPopulation.size();i++){
-			if(family[index]==mPopulation[i])
-				ret=true;
+			if((*family[index])==(*mPopulation[i])){
+				ret=false;
+				break;
+			}
 		}
-		if(!ret){
+		if(ret){
 			mPopulation.push_back(family[index]);
 			hist[count]=index;
 			count++;

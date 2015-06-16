@@ -17,25 +17,30 @@ void Individual::initGene(){
 	Gt gt(INPUT_FILE);
 	gt.execute();
 	mGene=gt.convertAStoMatrix(gt.getASTable());
+	check();
 	mFitness=gt.getMakespan();
 }
 
 void Individual::fixGene(){
 	Gt gt(INPUT_FILE);
 	vector<vector<int> >buffer;
-	buffer=gt.fixMatrix(mGene);
+	mGene=gt.fixMatrix(mGene);
+	check();
+	mFitness=gt.getMakespan();
+}
+
+void Individual::check(){
 	// Check Matrix
-	for(int i=0;i<buffer.size();i++){
-		for(int j=0;j<buffer.size();j++){
+	for(int i=0;i<mGene.size();i++){
+		for(int j=0;j<mGene[0].size();j++){
 			if(mGene[i][j]==-1){
 				cout<<"error!!!"<<endl;
-				print(buffer);
+				print(mGene);
 				exit(-1);
 			}
 		}
 	}
 	//
-	mFitness=gt.getMakespan();
 }
 
 void Individual::print(){
@@ -88,14 +93,13 @@ bool Individual::less(Individual *l, Individual *r){
 }
 
 bool Individual::operator==(Individual& dst){
-	bool ret=true;
 	for(int i=0;i<mGene.size();i++){
 		for(int j=0;j<mGene.size();j++){
 			if(mGene[i][j]!=dst[i][j])
-				ret=false;
+				return false;
 		}
 	}
-	return ret;
+	return true;
 }
 
 bool Individual::operator!=(Individual& dst){

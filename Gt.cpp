@@ -1,5 +1,6 @@
 #include <iostream>
 #include <limits.h>
+#include <stdio.h>
 #include "Gt.h"
 #include "Util.h"
 #include "FileReader.h"
@@ -56,8 +57,16 @@ void Gt::execute(){
 		#endif
 		#ifdef DEBUG
 			for(int i=0;i<mCreateTable[index].size();i++){
+
 				for(int j=0;j<mCreateTable[index][0].size();j++){
-					cout<<mCreateTable[index][i][j]<<" ";
+					if(findJobpairByMachineAndJob(i,j,NOWJOBPAIR)->isCheck()){
+						cout<<"[";
+					}
+					cout<<mCreateTable[index][i][j]<<"("<<findJobpairByMachineAndJob(i,j,NOWJOBPAIR)->time<<")"<<" ";
+					if(findJobpairByMachineAndJob(i,j,NOWJOBPAIR)->isCheck()){
+						printf("\033[1D");
+						cout<<"] ";
+					}
 				}
 				cout<<endl;
 			}
@@ -65,7 +74,7 @@ void Gt::execute(){
 		if(machine==-1)
 			break;
 		// step3
-		if(checkConflict(index,machine,T)){
+		//if(checkConflict(index,machine,T)){
 			// step4
 			#ifdef DEBUG
 				cout<<"check"<<endl;
@@ -74,10 +83,10 @@ void Gt::execute(){
 			fixConflict(index,machine,TT);
 			setNextJobpair(index,machine,TT);
 			
-		}else{
+		//}else{
 			// step5
-			setNextJobpair(index,machine,T);
-		}
+		//	setNextJobpair(index,machine,T);
+		//}
 		addNextIndexTable(index);
 		index++;
 
@@ -123,6 +132,8 @@ bool Gt::checkConflict(int index,int machine,pair<int,int> &T){
 	vector<JobPair> c;
 	// 同じTをsameTに代入
 	for(int i=0;i<jobTable.size();i++){
+		if(findJobpairByMachineAndJob(machine,i,NOWJOBPAIR)->isCheck())
+			continue;
 		JobPair jp;
 		jp.jobIndex=i;
 		jp.time=jobTable[i];
@@ -158,6 +169,8 @@ void Gt::fixConflict(int index,int machine,pair<int,int> &T){
 	vector<JobPair> differT;
 	// 同じTをsameTに代入
 	for(int i=0;i<jobTable.size();i++){
+		if(findJobpairByMachineAndJob(machine,i,NOWJOBPAIR)->isCheck())
+			continue;
 		JobPair jp;
 		jp.jobIndex=i;
 		jp.time=jobTable[i];

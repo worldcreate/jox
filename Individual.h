@@ -24,6 +24,7 @@ public:
 	static bool less(Individual*,Individual*);
 	~Individual();
 private:
+	void check();
 	vector<vector<int> > mGene;
 	int mFitness;
 };

@@ -10,24 +10,24 @@
 
 using namespace std;
 
-#define N 1000000
+#define N 10000
 
 Test::Test(){
 
 }
 
 void Test::test(){
-	int t=INT_MAX;
-	double sum=0;
+	int min=INT_MAX;
+	int avg=0;
 	for(int i=0;i<N;i++){
-		Individual individual;
-		individual.initGene();
-		//individual.print();
-		if(t>individual.getFitness()){
-			t=individual.getFitness();
+		Individual ind;
+		ind.initGene();
+		int fit=ind.getFitness();
+		avg+=fit;
+		if(fit<min){
+			min=fit;
 		}
-		sum+=individual.getFitness();
 	}
-	cout<<"min="<<t<<endl;
-	cout<<"ave="<<sum/N<<endl;
+	cout<<"min="<<min<<endl;
+	cout<<"avg="<<avg/N<<endl;
 }

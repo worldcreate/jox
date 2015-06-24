@@ -2,6 +2,8 @@
 #define _GA_H_
 
 #include <vector>
+#include <time.h>
+#include <windows.h>
 
 using namespace std;
 

@@ -6,7 +6,6 @@
 #include <math.h>
 
 Ga::Ga(){
-
 }
 
 void Ga::setPopulation(int x){
@@ -30,9 +29,7 @@ void Ga::execute(){
 	initialize();
 	
 	while(g<mGeneration){
-		cout<<"gen="<<g<<endl;
 		crossOver();
-		printMinFitness();
 		g++;
 	}
 
@@ -189,7 +186,6 @@ void Ga::jox(vector<Individual*> &family){
 		c1->fixGene();
 		c2->fixGene();
 
-		
 		family.push_back(c1);
 		family.push_back(c2);
 	}

@@ -6,18 +6,26 @@
 
 using namespace std;
 
+class FileReader;
+
 class Gt{
 public:
 	class JobPair{
 	public:
 		JobPair(){
 			machine=-1;
-			time=-1;
+			time=-1;	// 加工時刻
+			endTime=-1;	// 加工終了時刻
 			jobIndex=-1;
 			checked=false;
+			prev=-1;
+			next=-1;
 		}
 		int machine;
+		int prev;
+		int next;
 		int time;
+		int endTime;
 		int jobIndex;
 		bool isCheck(){return checked;}
 		void check(){checked=true;}
@@ -38,22 +46,23 @@ public:
 private:
 	
 	Table mTable;
-	vector<vector<vector<int> > > mCreateTable;
+	vector<vector<JobPair> > mCreateTable;
 	vector<vector<JobPair> > mMatrix;
 	int mJobNum;
 	int mMachineNum;
 	bool mFix;
 
-	int getMinTimeOverT(const vector<vector<int> > &,pair<int,int>&);
-	bool checkConflict(int,int,pair<int,int>&);
-	void fixConflict(int,int,pair<int,int>&);
-	void setNextJobpair(int,int,pair<int,int>);
+	int getMinTimeOverT(pair<int,int>&);
+	void fixConflict(int,pair<int,int>&);
+	void setNextJobpair(int,pair<int,int>);
 	void addNextIndexTable(int);
-	Gt::JobPair* findJobpairByMachineAndJob(int,int,int);
+	Gt::JobPair* findJobpairByMachineAndJob(int,int);
 	Gt::JobPair& findJobpairByMachineAndJobFromMatrix(int,int);
 	Gt::JobPair& getFirstNotCheckJobPairFromMatrix(int);
 	void changeOrderJobPairMatrix(int,int,int);
 	enum {PREVJOBPAIR=-1,NOWJOBPAIR,NEXTJOBPAIR};
+
+	static FileReader* fr;
 };
 
 #endif

@@ -1,5 +1,5 @@
-#ifndef _TEST_H_
-#define _TEST_H_
+#ifndef _FILEREADER_H_
+#define _FILEREADER_H_
 
 #include "Gt.h"
 

@@ -1,14 +1,18 @@
 #ifndef _FILEREADER_H_
 #define _FILEREADER_H_
 
-#include "Gt.h"
+#include <vector>
+#include <string>
+#include "JobPair.h"
+
+using namespace std;
 
 class FileReader{
 public:
 	FileReader(const char *);
-	Gt::Table getTable();
+	vector<vector<JobPair> >& getTable();
 private:
-	Gt::Table mTable;
+	vector<vector<JobPair> > mTable;
 	vector<string> split(const string &str, char delim);
 };
 

@@ -7,48 +7,44 @@
 #include "FileReader.h"
 
 
+
 using namespace std;
 
 FileReader::FileReader(const char *file){
 	ifstream ifs(file);
 	string str;
 	int j=0;
+	int cnt=0;
 
 	while(getline(ifs,str)){
-		vector<Gt::JobPair> row;
+		vector<JobPair> row;
 		vector<string> array=split(str,':');
 
 		for(int i=0;i<array.size();i++){
 			vector<string> pair=split(array[i],',');
 			const char *machine=pair[0].c_str();
 			const char *time=pair[1].c_str();
-			Gt::JobPair jp;
+			JobPair jp;
 			jp.machine=atoi(machine);
 			jp.time=atoi(time);
 			jp.endTime=-1;
 			jp.jobIndex=j;
+			jp.technicalOrder=i;
+			jp.index=cnt++;
 			if(i!=0){
 				jp.prev=row[i-1].machine;
+				jp.prevIndex=row[i-1].index;
 				row[i-1].next=jp.machine;
+				row[i-1].nextIndex=jp.index;
 			}
 			row.push_back(jp);
 		}
 		mTable.push_back(row);
 		j++;
 	}
-	#ifdef DEBUG
-		cout<<"jobIndex list"<<endl;
-		for(int i=0;i<mTable.size();i++){
-			for(int j=0;j<mTable[0].size();j++){
-				cout<<mTable[i][j].jobIndex<<" ";
-			}
-			cout<<endl;
-		}
-		cout<<endl;
-	#endif
 }
 
-Gt::Table FileReader::getTable(){
+vector<vector<JobPair> >& FileReader::getTable(){
 	return mTable;
 }
 

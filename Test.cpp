@@ -21,7 +21,7 @@ void Test::test(){
 	int avg=0;
 	for(int i=0;i<N;i++){
 		Individual ind;
-		ind.initGene();
+		//ind.initGene();
 		int fit=ind.getFitness();
 		avg+=fit;
 		if(fit<min){

@@ -9,8 +9,8 @@ class Individual{
 public:
 	Individual();
 	Individual(int,int);
-	void initGene();
-	void fixGene();
+	void initGene(const char*);
+	void fixGene(const char*);
 	void print();
 	void print(vector<vector<int> >&);
 	int getJobNum();

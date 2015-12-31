@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <limits.h>
 #include <math.h>
+#include <stdio.h>
 
 Ga::Ga(){
 }
@@ -22,6 +23,10 @@ void Ga::setGeneration(int x){
 
 void Ga::setChildNum(int x){
 	mChildNum=x;
+}
+
+void Ga::setFileName(char *name){
+	strcpy(fileName,name);
 }
 
 void Ga::execute(){
@@ -45,7 +50,7 @@ void Ga::printPopulation(){
 void Ga::initialize(){
 	for(int i=0;i<mPopulationSize;i++){
 		Individual* ind=new Individual();
-		ind->initGene();
+		ind->initGene(fileName);
 		mPopulation.push_back(ind);
 	}
 }
@@ -60,6 +65,13 @@ void Ga::crossOver(){
 	family.push_back(mPopulation[r]);
 	removePopulation(r);
 	jox(family);
+	#ifdef DEBUG
+		printf("family.size()=%d\n",family.size());
+		for(int i=0;i<family.size();i++){
+			printf("family[%d]\n",i);
+			family[i]->print();
+		}
+	#endif
 	// 子供を母集団と同じ個体にしないための操作
 	int count=0;
 	int index=0;
@@ -67,6 +79,12 @@ void Ga::crossOver(){
 	while(true){
 		bool ret=true;
 		for(int i=0;i<mPopulation.size();i++){
+			#ifdef DEBUG
+				printf("family[%d]\n",index);
+				family[index]->print();
+				printf("mPopulation[%d]\n",i);
+				mPopulation[i]->print();
+			#endif
 			if((*family[index])==(*mPopulation[i])){
 				ret=false;
 				break;
@@ -81,6 +99,26 @@ void Ga::crossOver(){
 			}
 		}
 		index++;
+		if(index>family.size()-1){
+			for(int i=count;i<2;i++){
+				int k=0;
+				while(true){
+					bool isFind=false;
+					for(int j=0;j<count;j++){
+						if(hist[j]==k)
+							isFind=true;
+					}
+					if(!isFind){
+						mPopulation.push_back(family[k]);
+						hist[i]=k;
+						count++;
+						break;
+					}
+					k++;
+				}
+			}
+			break;
+		}
 	}
 	for(int i=0;i<family.size();i++){
 		if(i==hist[0])
@@ -183,8 +221,8 @@ void Ga::jox(vector<Individual*> &family){
 			}
 			cout<<"==============================="<<endl;
 		#endif
-		c1->fixGene();
-		c2->fixGene();
+		c1->fixGene(fileName);
+		c2->fixGene(fileName);
 
 		family.push_back(c1);
 		family.push_back(c2);

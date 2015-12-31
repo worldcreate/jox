@@ -1,7 +1,8 @@
 #include <iostream>
+#include <stdlib.h>
+#include <stdio.h>
 #include "Individual.h"
 #include "Gt.h"
-#include <stdlib.h>
 
 Individual::Individual():mFitness(0){
 

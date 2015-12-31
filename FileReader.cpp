@@ -6,10 +6,19 @@
 #include <stdlib.h>
 #include "FileReader.h"
 
+map<string,FileReader*> FileReader::pool;
 
-using namespace std;
+FileReader* FileReader::getInstance(const char *file){
+	string str(file);
+	if (pool.find(str) == pool.end()) {
+		FileReader* fileReader=new FileReader(str.c_str());
+		pool[str]=fileReader;
+	}
+	return pool[str];
+}
 
 FileReader::FileReader(const char *file){
+	printf("FileReader\n");
 	ifstream ifs(file);
 	string str;
 	int j=0;

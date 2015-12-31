@@ -3,7 +3,7 @@
 #include "Gt.h"
 #include <stdlib.h>
 
-#define INPUT_FILE "FT10.txt"
+#define INPUT_FILE "probrem/FT10.txt"
 
 Individual::Individual():mFitness(0){
 

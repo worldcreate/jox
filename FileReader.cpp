@@ -18,7 +18,6 @@ FileReader* FileReader::getInstance(const char *file){
 }
 
 FileReader::FileReader(const char *file){
-	printf("FileReader\n");
 	ifstream ifs(file);
 	string str;
 	int j=0;

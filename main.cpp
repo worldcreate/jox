@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <iostream>
 #include <cstdlib>
 #include "Ga.h"
@@ -23,6 +24,7 @@ int main(int argc,char *argv[]){
 	int childnum=CHILDNUM;
 	int trial=TRIAL;
 	int seed=SEED;
+	char FileName[256]="probrem/FT10.txt";
 	while(argc>i){
 		if(argv[i][0]=='-'){
 			const char *arg=&argv[i][2];
@@ -45,6 +47,9 @@ int main(int argc,char *argv[]){
 				case 's':
 					seed=atoi(arg);
 				break;
+				case 'f':
+					sprintf(FileName,"probrem/%s",arg);
+				break;
 			}
 		}
 		i++;
@@ -58,6 +63,7 @@ int main(int argc,char *argv[]){
 		ga.setGeneration(generation);
 		ga.setMutation(mutation);
 		ga.setChildNum(childnum);
+		ga.setFileName(FileName);
 		ga.execute();
 	}
 }

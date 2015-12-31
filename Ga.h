@@ -16,6 +16,7 @@ public:
 	void setGeneration(int);
 	void setMutation(int);
 	void setChildNum(int);
+	void setFileName(char *);
 	void printPopulation();
 	void jox(vector<Individual*>&);
 	void execute();
@@ -31,6 +32,7 @@ private:
 	int mMutation;
 	int mGeneration;
 	int mChildNum;
+	char fileName[256];
 	vector<Individual*> mPopulation;
 };
 

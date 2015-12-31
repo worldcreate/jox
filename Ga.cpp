@@ -24,6 +24,10 @@ void Ga::setChildNum(int x){
 	mChildNum=x;
 }
 
+void Ga::setFileName(char *name){
+	strcpy(fileName,name);
+}
+
 void Ga::execute(){
 	int g=0;
 	initialize();
@@ -45,7 +49,7 @@ void Ga::printPopulation(){
 void Ga::initialize(){
 	for(int i=0;i<mPopulationSize;i++){
 		Individual* ind=new Individual();
-		ind->initGene();
+		ind->initGene(fileName);
 		mPopulation.push_back(ind);
 	}
 }
@@ -183,8 +187,8 @@ void Ga::jox(vector<Individual*> &family){
 			}
 			cout<<"==============================="<<endl;
 		#endif
-		c1->fixGene();
-		c2->fixGene();
+		c1->fixGene(fileName);
+		c2->fixGene(fileName);
 
 		family.push_back(c1);
 		family.push_back(c2);

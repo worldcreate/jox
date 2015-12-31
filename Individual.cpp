@@ -3,8 +3,6 @@
 #include "Gt.h"
 #include <stdlib.h>
 
-#define INPUT_FILE "probrem/FT10.txt"
-
 Individual::Individual():mFitness(0){
 
 }
@@ -13,16 +11,16 @@ Individual::Individual(int machineNum,int jobNum):mFitness(0){
 	mGene=vector<vector<int> >(machineNum,vector<int>(jobNum,-1));
 }
 
-void Individual::initGene(){
-	Gt gt(INPUT_FILE);
+void Individual::initGene(const char *fileName){
+	Gt gt(fileName);
 	gt.execute();
 	mGene=gt.convertAStoMatrix(gt.getASTable());
 	check();
 	mFitness=gt.getMakespan();
 }
 
-void Individual::fixGene(){
-	Gt gt(INPUT_FILE);
+void Individual::fixGene(const char *fileName){
+	Gt gt(fileName);
 	vector<vector<int> >buffer;
 	mGene=gt.fixMatrix(mGene);
 	check();

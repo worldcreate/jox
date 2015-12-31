@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -O2
+CFLAGS = -O2 
 LDFLAGS =
 INCLUDES = 
 LIBS =
@@ -11,15 +11,16 @@ OBJS = $(SRC:.cpp=.o)
 # 生成規則 
 all: $(TARGET)
 
-debug: DEBUG=-g -DDEBUG
-
-debug: $(TARGET)
+debug:
+	make $(TARGET) DEBUG='-g -DDEBUG' CFLAGS='-O0'
 
 $(TARGET): $(OBJS)
 	$(CC) $(LDFLAGS) $(DEBUG) -o $@ $(OBJS) $(LIBS) 
+
 run:
 	./$(TARGET)
+
 clean:
-	rm -f $(TARGET) $(OBJS) .nfs* *~ \#* core 
+	rm -f $(TARGET) $(OBJS) .nfs* *~ *.core *.stackdump \#* core 
 .cpp.o:
 	$(CC) $(CFLAGS) $(DEBUG) $(INCLUDES) -c $< 

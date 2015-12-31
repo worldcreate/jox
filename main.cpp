@@ -50,6 +50,17 @@ int main(int argc,char *argv[]){
 				case 'f':
 					sprintf(FileName,"probrem/%s",arg);
 				break;
+				case 'h':
+					printf("Usage Jox [OPTION]\n");
+					printf("  -g\t generation num\n");
+					printf("  -p\t population num\n");
+					printf("  -m\t mutation rate\n");
+					printf("  -c\t make child num\n");
+					printf("  -t\t trial num\n");
+					printf("  -s\t random seed\n");
+					printf("  -f\t setting file name\n");
+					exit(0);
+				break;
 			}
 		}
 		i++;

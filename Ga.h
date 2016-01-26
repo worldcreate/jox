@@ -4,6 +4,7 @@
 #include <vector>
 #include <time.h>
 #include <windows.h>
+#include <stdio.h>
 
 using namespace std;
 
@@ -11,12 +12,7 @@ class Individual;
 
 class Ga{
 public:
-	Ga();
-	void setPopulation(int);
-	void setGeneration(int);
-	void setMutation(int);
-	void setChildNum(int);
-	void setFileName(char *);
+	Ga(int,char*[],int);
 	void printPopulation();
 	void jox(vector<Individual*>&);
 	void execute();
@@ -24,7 +20,7 @@ public:
 private:
 	void initialize();
 	void crossOver();
-	void printMinFitness();
+	void printMinFitness(int);
 	void mutation(Individual*);
 	void shiftChange(vector<int>&,int,int);
 	void removePopulation(int);
@@ -33,6 +29,7 @@ private:
 	int mGeneration;
 	int mChildNum;
 	char fileName[256];
+	FILE *fOut;
 	vector<Individual*> mPopulation;
 };
 
